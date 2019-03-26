@@ -341,7 +341,7 @@ public class cards extends JFrame{
             //Nothing (mandatory override)
         }
 
-        public void mousePressed(MouseEvent ebento) 
+        public void mousePressed(MouseEvent e) 
         {
             if (e.getSource() == card1) //The corresponding card was pressed
             {
@@ -425,15 +425,15 @@ public class cards extends JFrame{
             } 
         }
 
-        public void mouseReleased(MouseEvent ebento) 
+        public void mouseReleased(MouseEvent e) 
         {
             //Nothing (mandatory override)
         }
-        public void mouseEntered(MouseEvent ebento) 
+        public void mouseEntered(MouseEvent e) 
         {
             //Nothing (mandatory override)
         }
-        public void mouseExited(MouseEvent ebento) 
+        public void mouseExited(MouseEvent e) 
         {
             //Nothing (mandatory override)
         }
