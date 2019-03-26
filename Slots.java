@@ -1,3 +1,8 @@
+//Caution: Direct download of this application will not work without the associated image files.
+
+//This slot machine contains two multiplier symbols (2x and 3x) that multiply the payout.
+//All symbols must be on the 'payline' (the middle of the reel)
+
 package casinopack;
 
 import java.awt.event.ActionEvent;
@@ -24,13 +29,13 @@ public class Slots extends JFrame
     private ImageIcon[] symbol, spinAnim;
     private ImageIcon lightOff, lightOn;
     
-    JLabel version = new JLabel("Java Slots - Version 1.0.1");
+    JLabel version = new JLabel("Java Slots - Version 1.0.1"); //Displayed at the upper left corner of the screen
     
     private JLabel payline = new JLabel();   
     
     ImageIcon payTableImage = new ImageIcon(getClass().getResource("PayTable.PNG"));
     
-    Timer nelly, nallu, nolla, nulli;
+    Timer spinner, spinReel1, spinReel2, spinReel3;
     Random spinner = new Random();
     
     private int[] paylineSymbol = new int[3];
@@ -42,13 +47,13 @@ public class Slots extends JFrame
         this.credits = credits;
         this.cost = cost;
 
-        p.setLayout(null);
+        p.setLayout(null); //Allows for manual placement of each element
         getContentPane().add(p); //Adds the panel to the window (all things are installed on the panel)
 
         version.setBounds(5, 0, 150, 30);
         p.add(version);
         
-        place = new JLabel[9];
+        place = new JLabel[9]; //These are the 'places' on the slot machine - three per reel
         
         symbol = new ImageIcon[20];
         symbol[0] = new ImageIcon(getClass().getResource("Blank.PNG"));
@@ -61,6 +66,8 @@ public class Slots extends JFrame
         symbol[7] = new ImageIcon(getClass().getResource("Gold7.PNG"));
         symbol[8] = new ImageIcon(getClass().getResource("2X.PNG"));
         symbol[9] = new ImageIcon(getClass().getResource("3X.PNG"));
+        
+        //The 'off' represents the symbol which is at the top or bottom of the reel (so is half the size)
         symbol[10] = new ImageIcon(getClass().getResource("BlankOff.PNG"));
         symbol[11] = new ImageIcon(getClass().getResource("1BarOff.PNG"));
         symbol[12] = new ImageIcon(getClass().getResource("2BarOff.PNG"));
@@ -72,6 +79,7 @@ public class Slots extends JFrame
         symbol[18] = new ImageIcon(getClass().getResource("2XOff.PNG"));
         symbol[19] = new ImageIcon(getClass().getResource("3XOff.PNG"));
         
+        //These are the 'spinning animations' so to speak
         spinAnim = new ImageIcon[9];
         spinAnim[0] = new ImageIcon(getClass().getResource("BlueSpin.PNG"));
         spinAnim[1] = new ImageIcon(getClass().getResource("RedSpin.PNG"));
@@ -83,6 +91,7 @@ public class Slots extends JFrame
         spinAnim[7] = new ImageIcon(getClass().getResource("RedSpinOff.PNG"));
         spinAnim[8] = new ImageIcon(getClass().getResource("GoldSpinOff.PNG"));
         
+        //The light at the top of the slot machine. If a win happens, it lights up
         lightOff = new ImageIcon(getClass().getResource("LightOff.PNG"));
         lightOn = new ImageIcon(getClass().getResource("LightOn.PNG"));
         
@@ -115,6 +124,7 @@ public class Slots extends JFrame
             frame.add(place[i]);
         }
         
+        //The payline was meant to go on top of the icons - but this never worked properly
 //        payline.setIcon(new ImageIcon(getClass().getResource("Payline.PNG")));
 //        payline.setBounds(46, 216, 855, 3);
 //        frame.add(payline);
@@ -142,18 +152,18 @@ public class Slots extends JFrame
         winningsDisplay.setBounds(450, 500, 200, 100);
         p.add(winningsDisplay);
         
-        HandlerClass handoraa = new HandlerClass(); //Allows for events on button presses
-        spin.addActionListener(handoraa);
-        bet1.addActionListener(handoraa);
-        betMax.addActionListener(handoraa);
-        payTable.addActionListener(handoraa);                    
+        HandlerClass handler = new HandlerClass(); //Allows for events on button presses
+        spin.addActionListener(handler);
+        bet1.addActionListener(handler);
+        betMax.addActionListener(handler);
+        payTable.addActionListener(handler);                    
     }
     
     private class HandlerClass implements ActionListener
     {
-        public void actionPerformed(ActionEvent ebento)
+        public void actionPerformed(ActionEvent e)
         {       
-           if (ebento.getSource() == spin) //Spin button was pressed
+           if (e.getSource() == spin) //Spin button was pressed
            {
                if (getCredits() < getCost())
                {
@@ -166,14 +176,14 @@ public class Slots extends JFrame
                
                light.setIcon(lightOff);
                
-               spin.setEnabled(false);
+               spin.setEnabled(false); //Buttons disabled while a spin is in progress
                bet1.setEnabled(false);
                betMax.setEnabled(false);
                payTable.setEnabled(false);
                
                spin();
            }
-           if (ebento.getSource() == bet1)
+           if (e.getSource() == bet1) //Elevates the bet by 5 credits (or sets to 5 if at max)
            {
                if (getCost() == 15)
                {
@@ -185,7 +195,7 @@ public class Slots extends JFrame
                }
                bet1.setText("Bet " + getCost());
            }
-           if (ebento.getSource() == betMax)
+           if (e.getSource() == betMax) //Sets the bet to the maximum (15 credits) and instantly spins
            {   
                if (getCost() != 15)
                {
@@ -204,20 +214,21 @@ public class Slots extends JFrame
                
                light.setIcon(lightOff);
                
-               spin.setEnabled(false);
+               spin.setEnabled(false); //Buttons disabled while a spin is in progress
                bet1.setEnabled(false);
                betMax.setEnabled(false);
                payTable.setEnabled(false);
                
                spin();
            }
-           if (ebento.getSource() == payTable)
+           if (e.getSource() == payTable) //Opens the pay table in a small window
            {
                JOptionPane.showMessageDialog(null, "", "Pay Table", JOptionPane.INFORMATION_MESSAGE, payTableImage);
            }
         }
     }
     
+    //Unnecessary as this is all in one class
     public void setCost(int newCost)
     {
         cost = newCost;
@@ -238,19 +249,19 @@ public class Slots extends JFrame
         return credits;
     }
     
-    public void spin()
+    public void spin() //Sets the reels spinning
     {
-        nelly = new Timer();
-        nelly.schedule(new spinClass(), 1000, 1 * 1000);
+        spinner = new Timer();
+        spinner.schedule(new spinClass(), 1000, 1 * 1000); //1 second delay, then runs at a 1 second interval
 
-        nallu = new Timer();
-        nallu.schedule(new spinReel1Class(), 0, 1 * 50);
+        spinReel1 = new Timer();
+        spinReel1.schedule(new spinReel1Class(), 0, 1 * 50); //Runs at a 50 millisecond interval
         
-        nolla = new Timer();
-        nolla.schedule(new spinReel2Class(), 0, 1 * 50);
+        spinReel2 = new Timer();
+        spinReel2.schedule(new spinReel2Class(), 0, 1 * 50);
         
-        nulli = new Timer();
-        nulli.schedule(new spinReel3Class(), 0, 1 * 50);
+        spinReel3 = new Timer();
+        spinReel3.schedule(new spinReel3Class(), 0, 1 * 50);
     }
     
     public int getSymbol(int choice) //This decides how often a given symbol appears
@@ -297,18 +308,18 @@ public class Slots extends JFrame
         }
     }
     
-    public void setSymbol(int i, int decision)
+    public void setSymbol(int i, int decision) //This puts the symbol on the reel in the location selected
     {
         if (i <= 2)
         {
             place[i].setIcon(symbol[decision]);
             paylineSymbol[i] = decision;
-            if (decision >= 8)
+            if (decision >= 8) //If the symbol is a 2x or 3x, and is on the payline (places 0 through 2) a beep occurs
             {
                 java.awt.Toolkit.getDefaultToolkit().beep();
             }
         }
-        else
+        else //The top and bottom of the reels are half the height of the center - so these use different graphics
         {
             place[i].setIcon(symbol[decision + 10]);
         }
@@ -319,23 +330,23 @@ public class Slots extends JFrame
         int[] decision = new int[9];
         int reel = 0;
         
-        public void run() 
+        public void run() //Runs at the interval described above (1000 ms/1 second)
         {
             switch (reel)
             {
                 case 0:
                 {
-                    nallu.cancel(); 
+                    spinReel1.cancel(); //Stops the reel spinning
                     
-                    place[0].setIcon(null);
+                    place[0].setIcon(null); //Blanks the reel so that no spinning animations are seen
                     place[3].setIcon(null);
                     place[6].setIcon(null);
                     
-                    break;
+                    break; //Exits the switch
                 }
                 case 1:
                 {
-                    nolla.cancel(); 
+                    spinReel2.cancel(); 
                     
                     place[1].setIcon(null);
                     place[4].setIcon(null);
@@ -345,7 +356,7 @@ public class Slots extends JFrame
                 }
                 case 2:
                 {
-                    nulli.cancel(); 
+                    spinReel3.cancel(); 
                     
                     place[2].setIcon(null);
                     place[5].setIcon(null);
@@ -361,13 +372,13 @@ public class Slots extends JFrame
                 {
                     if (i % 3 == 0)
                     {
-                        int choice = spinner.nextInt(1800);
+                        int choice = spinner.nextInt(1800); //Instead of 2000; this prevents a multiplier from being on the first reel
                         decision[i] = getSymbol(choice);
-                        setSymbol(i, decision[i]);
+                        setSymbol(i, decision[i]); //Sets the place to the selected symbol
                     }
                     else
                     {
-                        int choice = spinner.nextInt(2000);
+                        int choice = spinner.nextInt(2000); //Multipliers can appear on either of the other two reels
                         decision[i] = getSymbol(choice);
                         setSymbol(i, decision[i]);
                     } 
@@ -376,12 +387,12 @@ public class Slots extends JFrame
             
             reel++;
             
-            if (reel > 3)
+            if (reel > 3) //Reels have been spun, end of the 'hand'
             {
-                nelly.cancel();
+                spinner.cancel();
                 calculate();
                 
-                spin.setEnabled(true);
+                spin.setEnabled(true); //Buttons re-enabled for the next spin
                 bet1.setEnabled(true);
                 betMax.setEnabled(true);
                 payTable.setEnabled(true);
@@ -392,13 +403,13 @@ public class Slots extends JFrame
     private class spinReel1Class extends TimerTask
     {
         int spinColor = 0;
-        public void run() 
+        public void run() //At 50 ms
         {
-            place[0].setIcon(spinAnim[spinColor]);
+            place[0].setIcon(spinAnim[spinColor]); //This is the 'spinning animation'
             place[3].setIcon(spinAnim[spinColor + 3]);
             place[6].setIcon(spinAnim[spinColor + 3]);
             
-            if (spinColor == 2)
+            if (spinColor == 2) //Resets the spin color
             {
                 spinColor = 0;
             }
@@ -458,7 +469,7 @@ public class Slots extends JFrame
         boolean jackpot = false;
         boolean wildsOnly = true;
         
-        for (int i = 0; i < paylineSymbol.length; i++)
+        for (int i = 0; i < paylineSymbol.length; i++) //Calculates the number of 2x or 3x symbols there are
         {
             if (paylineSymbol[i] == 8)
             {
@@ -474,25 +485,26 @@ public class Slots extends JFrame
         payout = getPayout(doubles, triples);
         wildsOnly = checkWildsOnly();
         
-        if (payout == 15000)
+        if (payout == 15000) //Only happens if a Gold 7 + 3x + 3x
         {
             jackpot = true;
         }
 
-        if (wildsOnly)
+        if (wildsOnly) //Multiplers exist, but no other winning combination exists
         {
+        //A 2x symbol is worth 6 credits * bet. 3x is worth 9 credits * bet
             switch (doubles)
             {
-                case 0:
+                case 0: //No 2x symbols
                 {
                     switch(triples)
                     {
-                        case 1:
+                        case 1: //One 3x symbol
                         {
                             payout = 9;
                             break;
                         }
-                        case 2:
+                        case 2: //Two 3x symbols
                         {
                             payout = 18;
                             break;
@@ -500,16 +512,16 @@ public class Slots extends JFrame
                     }
                     break;
                 }
-                case 1:
+                case 1: //One 2x symbol
                 {
                     switch(triples)
                     {
-                        case 0:
+                        case 0: //No 3x symbols 
                         {
                             payout = 6;
                             break;
                         }
-                        case 1:
+                        case 1: //One 3x symbol
                         {
                             payout = 15;
                             break;
@@ -517,7 +529,7 @@ public class Slots extends JFrame
                     }
                     break;
                 }
-                case 2:
+                case 2: //Two 2x symbols
                 {
                     payout = 12;
                     break;
@@ -525,12 +537,12 @@ public class Slots extends JFrame
             }
         }     
 
-        if (doubles > 0 && ! jackpot && ! wildsOnly)
+        if (doubles > 0 && ! jackpot && ! wildsOnly) //Multiplies the payout by 2 for each 2x symbol as long as a jackpot does not exist
         {
             payout = payout * 2 * doubles;
         }
         
-        if (triples > 0 && ! jackpot && ! wildsOnly)
+        if (triples > 0 && ! jackpot && ! wildsOnly) //Multiplies the payout by 3 for each 3x symbol as long as a jackpot does not exist
         {
             if (triples == 1)
             {
@@ -542,6 +554,7 @@ public class Slots extends JFrame
             }
         }
         
+        //Displays a message depending on the payout
         if (payout == 0)
         {
             winningsDisplay.setText("Nothing here! Try again");
@@ -753,6 +766,7 @@ public class Slots extends JFrame
         return 0;
     }
     
+    //Checks if a multipler exists. If it does, then if the first symbol is blank, or no other winning combination exists, returns true. Otherwise returns false.
     public boolean checkWildsOnly()
     {
         if (paylineSymbol[1] >= 8 || paylineSymbol[2] >= 8)
