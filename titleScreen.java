@@ -1,3 +1,5 @@
+//Caution: Direct download of this application will not work without the associated image files.
+
 package casinopack;
 
 import java.awt.event.MouseEvent;
@@ -7,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 public class titleScreen extends JFrame
 {
     JLabel logo = new JLabel(); //Represents the logo
@@ -15,7 +16,7 @@ public class titleScreen extends JFrame
     JLabel game2 = new JLabel();
     JLabel game3 = new JLabel();
     
-    JLabel version = new JLabel("Java Casino - Version 1.0");
+    JLabel version = new JLabel("Java Casino - Version 1.0"); //This appears in the upper-left corner of the screen
     
     public boolean game1Open = false;
     public boolean game2Open = false;
@@ -26,7 +27,7 @@ public class titleScreen extends JFrame
         super("Java Casino");
         JPanel p = new JPanel();
         
-        p.setLayout(null);
+        p.setLayout(null); //This allows manual placement of each element
         getContentPane().add(p);
         
         version.setBounds(5, 0, 150, 30);
@@ -49,10 +50,10 @@ public class titleScreen extends JFrame
         game3.setBounds(750, 220, 329, 424);
         p.add(game3);
         
-        mouseHandlerClass handoraa = new mouseHandlerClass();
-        game1.addMouseListener(handoraa);
-        game2.addMouseListener(handoraa);
-        game3.addMouseListener(handoraa);
+        mouseHandlerClass handler = new mouseHandlerClass();
+        game1.addMouseListener(handler);
+        game2.addMouseListener(handler);
+        game3.addMouseListener(handler);
     }
     
     private class mouseHandlerClass implements MouseListener 
@@ -60,7 +61,7 @@ public class titleScreen extends JFrame
         
         public void mouseClicked(MouseEvent ebento)
         {
-            //Nothing
+            //Nothing (mandatory override)
         }
 
         public void mousePressed(MouseEvent ebento) 
@@ -69,13 +70,13 @@ public class titleScreen extends JFrame
             {
                 if ( ! game1Open && ! game2Open && ! game3Open) //Basically this prevents opening multiple games
                 {
-                    Slots moira = new Slots(500, 5); //Starting credits and initial cost
-                    moira.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    moira.setSize(1175, 700); //Size of the window
-                    moira.setVisible(true);
+                    Slots slots = new Slots(500, 5); //Starting credits and initial cost
+                    slots.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    slots.setSize(1175, 700); //Size of the window
+                    slots.setVisible(true);
                     game1Open = true;
                     
-                    moira.addWindowListener(new java.awt.event.WindowAdapter() //This allows the user to click either Close or the X to close the window
+                    slots.addWindowListener(new java.awt.event.WindowAdapter() //This allows the user to click either Close or the X to close the window
                     {
                         public void windowClosing(java.awt.event.WindowEvent ebento)
                         {
@@ -89,13 +90,13 @@ public class titleScreen extends JFrame
             {
                 if ( ! game1Open && ! game2Open && ! game3Open)
                 {
-                    cards moira = new cards(100);
-                    moira.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    moira.setSize(1175, 560); //Size of the window
-                    moira.setVisible(true);
+                    cards cardsReg = new cards(100);
+                    cardsReg.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    cardsReg.setSize(1175, 560); //Size of the window
+                    cardsReg.setVisible(true);
                     game2Open = true;
                     
-                    moira.addWindowListener(new java.awt.event.WindowAdapter() //This allows the user to click either Close or the X to close the window
+                    cardsReg.addWindowListener(new java.awt.event.WindowAdapter() //This allows the user to click either Close or the X to close the window
                     {
                         public void windowClosing(java.awt.event.WindowEvent ebento)
                         {
@@ -109,13 +110,13 @@ public class titleScreen extends JFrame
             {
                 if ( ! game1Open && ! game2Open && ! game3Open)
                 {
-                    cardsWild moira = new cardsWild(100);
-                    moira.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    moira.setSize(1175, 560); //Size of the window
-                    moira.setVisible(true);
+                    cardsWild deuces = new cardsWild(100);
+                    deuces.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    deuces.setSize(1175, 560); //Size of the window
+                    deuces.setVisible(true);
                     game3Open = true;
                     
-                    moira.addWindowListener(new java.awt.event.WindowAdapter() //This allows the user to click either Close or the X to close the window
+                    deuces.addWindowListener(new java.awt.event.WindowAdapter() //This allows the user to click either Close or the X to close the window
                     {
                         public void windowClosing(java.awt.event.WindowEvent ebento)
                         {
@@ -128,20 +129,21 @@ public class titleScreen extends JFrame
 
         public void mouseReleased(MouseEvent ebento) 
         {
-            //Nothing
+            //Nothing (mandatory override)
         }
 
         public void mouseEntered(MouseEvent ebento) 
         {
-            //Nothing
+            //Nothing (mandatory override)
         }
 
         public void mouseExited(MouseEvent ebento) 
         {
-            //Nothing
+            //Nothing (mandatory override)
         }
     }
     
+    //These are actually not necessary as everything is being done in the same class
     public void setGame1Open(boolean open)
     {
         game1Open = open;
