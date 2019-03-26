@@ -1,3 +1,5 @@
+//Caution: Direct download of this application will not work without the associated image files.
+
 package casinopack;
 
 import java.awt.event.ActionListener;
@@ -21,9 +23,9 @@ public class cards extends JFrame{
     
     private Boolean cardsDealt = false, card1Held = false, card2Held = false, card3Held = false, card4Held = false, card5Held = false, cardClickFlag = false;
     
-    private int decision1 = 52, decision2 = 52, decision3 = 52, decision4 = 52, decision5 = 52, decision6 = 52, decision7 = 52, decision8 = 52, decision9 = 52, decision10 = 52; //Technical null value. 
+    private int decision1 = 52, decision2 = 52, decision3 = 52, decision4 = 52, decision5 = 52, decision6 = 52, decision7 = 52, decision8 = 52, decision9 = 52, decision10 = 52; //Technical null value
     
-    JLabel version = new JLabel("Java Poker - Version 1.0");
+    JLabel version = new JLabel("Java Poker - Version 1.0"); //This appears at the upper left corner of the screen
     
     JLabel card1 = new JLabel(); //Represent the card icons on the screen
     JLabel card2 = new JLabel();
@@ -48,7 +50,7 @@ public class cards extends JFrame{
     
     private int discardCount = 0; //How many cards are discarded (calculated at second deal)
     
-    Timer nelly, nallu;
+    Timer cardTimer, calculator;
     Random dealer = new Random();
     
     public cards(int credits)
@@ -57,7 +59,7 @@ public class cards extends JFrame{
         JPanel p = new JPanel();
         setCActual(credits); //This allows for various starting credits
         
-        p.setLayout(null);
+        p.setLayout(null); //This allows for manual placement of each element
         getContentPane().add(p); //Adds the panel to the window (all things are installed on the panel)
         
         version.setBounds(5, 0, 150, 30);
@@ -81,7 +83,7 @@ public class cards extends JFrame{
         changeBet.setBounds(763, 400, 121, 40);
         p.add(changeBet);
         
-        betMax = new JButton("Bet Max"); //5
+        betMax = new JButton("Bet Max"); //The max bet is 5 credits
         betMax.setBounds(763, 450, 121, 40);
         p.add(betMax);
         
@@ -152,25 +154,26 @@ public class cards extends JFrame{
         held5.setBounds(904, 35, 181, 30);
         p.add(held5);
         
-        HandlerClass handoraa = new HandlerClass(); //Allows for events on button presses
-        cardDeal.addActionListener(handoraa);
-        card1Hold.addActionListener(handoraa);
-        card2Hold.addActionListener(handoraa);
-        card3Hold.addActionListener(handoraa);
-        card4Hold.addActionListener(handoraa);
-        card5Hold.addActionListener(handoraa);
-        payTable.addActionListener(handoraa);
-        changeBet.addActionListener(handoraa);
-        betMax.addActionListener(handoraa);
+        HandlerClass handler = new HandlerClass(); //Allows for events on button presses
+        cardDeal.addActionListener(handler);
+        card1Hold.addActionListener(handler);
+        card2Hold.addActionListener(handler);
+        card3Hold.addActionListener(handler);
+        card4Hold.addActionListener(handler);
+        card5Hold.addActionListener(handler);
+        payTable.addActionListener(handler);
+        changeBet.addActionListener(handler);
+        betMax.addActionListener(handler);
         
-        mouseHandlerClass handoraa2 = new mouseHandlerClass();
-        card1.addMouseListener(handoraa2);
-        card2.addMouseListener(handoraa2);
-        card3.addMouseListener(handoraa2);
-        card4.addMouseListener(handoraa2);
-        card5.addMouseListener(handoraa2);
+        mouseHandlerClass handler2 = new mouseHandlerClass();
+        card1.addMouseListener(handler2);
+        card2.addMouseListener(handler2);
+        card3.addMouseListener(handler2);
+        card4.addMouseListener(handler2);
+        card5.addMouseListener(handler2);
     }
     
+    //As this is all in one class, getter and setter methods are unnecessary (so used for demonstrative purposes, I suppose?)
     public void setCActual(int credits)
     {
         creditsActual = credits;
@@ -193,9 +196,9 @@ public class cards extends JFrame{
     
     private class HandlerClass implements ActionListener
     {
-        public void actionPerformed(ActionEvent ebento)
+        public void actionPerformed(ActionEvent e)
         {
-           if (ebento.getSource() == cardDeal) //Deal button was pressed
+           if (e.getSource() == cardDeal) //Deal button was pressed
            {
                if (cardsDealt == false)
                {
@@ -210,23 +213,23 @@ public class cards extends JFrame{
                    secondDeal();
                }
            }
-           if (ebento.getSource() == card1Hold) //The corresponding Hold button was pressed
+           if (e.getSource() == card1Hold) //The corresponding Hold button was pressed
            {
                if (cardsDealt == true)
                {
-                   if (card1Held == false)
+                   if (card1Held == false) //Card is not being held
                    {
                        card1Held = true;
-                       held1.setText("Held");
+                       held1.setText("Held"); //Tells the player that the card is being held
                    }
-                   else
+                   else //Card was held
                    {
                        card1Held = false;
                        held1.setText("");
                    }
                }
            }
-           if (ebento.getSource() == card2Hold)
+           if (e.getSource() == card2Hold)
            {
                if (cardsDealt == true)
                {
@@ -242,7 +245,7 @@ public class cards extends JFrame{
                    }
                }
            }
-           if (ebento.getSource() == card3Hold)
+           if (e.getSource() == card3Hold)
            {
                if (cardsDealt == true)
                {
@@ -258,7 +261,7 @@ public class cards extends JFrame{
                    }
                }
            }
-           if (ebento.getSource() == card4Hold)
+           if (e.getSource() == card4Hold)
            {
               if (cardsDealt == true)
                {
@@ -274,7 +277,7 @@ public class cards extends JFrame{
                    }
                }
            }
-           if (ebento.getSource() == card5Hold)
+           if (e.getSource() == card5Hold)
            {
                if (cardsDealt == true)
                {
@@ -290,13 +293,13 @@ public class cards extends JFrame{
                    }
                }
            }
-           if (ebento.getSource() == payTable)
+           if (e.getSource() == payTable) //Opens the pay table in a small window
            {
                JOptionPane.showMessageDialog(null, "", "Pay Table", JOptionPane.INFORMATION_MESSAGE, payTableImage);
            }
-           if (ebento.getSource() == changeBet)
+           if (e.getSource() == changeBet) //Elevates the bet by 1 credit (or sets it at 1, if at max bet)
            {
-               card1.setIcon(back); 
+               card1.setIcon(back); //Resets the cards to face-down
                card2.setIcon(back);
                card3.setIcon(back);
                card4.setIcon(back);
@@ -316,7 +319,7 @@ public class cards extends JFrame{
                }
                changeBet.setText("Bet " + getCost());
            }
-           if (ebento.getSource() == betMax)
+           if (e.getSource() == betMax) //Sets the bet to max (5 credits) and instantly deals the next hand
            {
                if (getCost() != 5)
                {
@@ -330,17 +333,17 @@ public class cards extends JFrame{
         }
     }
     
-    private class mouseHandlerClass implements MouseListener
+    private class mouseHandlerClass implements MouseListener //This class allows for the cards themselves to be pressed as well as the buttons
     {
         
-        public void mouseClicked(MouseEvent ebento) //Identical to the Hold buttons (see under HandlerClass)
+        public void mouseClicked(MouseEvent e)
         {
-            //Nothing
+            //Nothing (mandatory override)
         }
 
         public void mousePressed(MouseEvent ebento) 
         {
-            if (ebento.getSource() == card1) //The corresponding card was pressed
+            if (e.getSource() == card1) //The corresponding card was pressed
             {
                 if (cardsDealt == true && cardClickFlag == true)
                 {
@@ -356,7 +359,7 @@ public class cards extends JFrame{
                     }
                 }
             }
-            if (ebento.getSource() == card2)
+            if (e.getSource() == card2)
             {
                 if (cardsDealt == true && cardClickFlag == true)
                 {
@@ -372,7 +375,7 @@ public class cards extends JFrame{
                     }
                 }
             }
-            if (ebento.getSource() == card3)
+            if (e.getSource() == card3)
             {
                 if (cardsDealt == true && cardClickFlag == true)
                 {
@@ -388,7 +391,7 @@ public class cards extends JFrame{
                     }
                 }
             }
-            if (ebento.getSource() == card4)
+            if (e.getSource() == card4)
             {
                 if (cardsDealt == true && cardClickFlag == true)
                 {
@@ -404,7 +407,7 @@ public class cards extends JFrame{
                     }
                 }
             }
-            if (ebento.getSource() == card5)
+            if (e.getSource() == card5)
             {
                 if (cardsDealt == true && cardClickFlag == true)
                 {
@@ -424,23 +427,23 @@ public class cards extends JFrame{
 
         public void mouseReleased(MouseEvent ebento) 
         {
-            //Nothing
+            //Nothing (mandatory override)
         }
         public void mouseEntered(MouseEvent ebento) 
         {
-            //Nothing
+            //Nothing (mandatory override)
         }
         public void mouseExited(MouseEvent ebento) 
         {
-            //Nothing
+            //Nothing (mandatory override)
         }
     }
     
-    public void firstDeal() //The initial hand, before discard
+    public void firstDeal() //Deals the first hand (the player will have a chance to discard unwanted cards)
     {
         handDisplay.setText(""); //Removes any previous messages which now are meaningless
         handDisplay2.setText("");
-        cardDeal.setEnabled(false); //Prevents overlapping deals (will soft lock the game if not present)
+        cardDeal.setEnabled(false); //Buttons are disabled while a deal is in progress
         card1Hold.setEnabled(false);
         card2Hold.setEnabled(false);
         card3Hold.setEnabled(false);
@@ -475,13 +478,13 @@ public class cards extends JFrame{
         card5Held = false;
         held5.setText("");
         
-        nelly = new Timer();
-        nelly.schedule(new firstDealClass(), 0, 1 * 400); //Each card is presented one at a time
+        cardTimer = new Timer();
+        cardTimer.schedule(new firstDealClass(), 0, 1 * 400); //Each card is presented one at a time (400 millisecond delay)
     }
     
-    public void secondDeal() //The deal after cards are held
+    public void secondDeal() //Deals out cards to replace the discarded cards - this deal ends the hand
     {
-        cardDeal.setEnabled(false); //Prevents overlapping deals (will soft lock the game if not present)
+        cardDeal.setEnabled(false); //Buttons are disabled while a deal is in progress
         card1Hold.setEnabled(false);
         card2Hold.setEnabled(false);
         card3Hold.setEnabled(false);
@@ -516,17 +519,17 @@ public class cards extends JFrame{
             discardCount++;
         }
         
-        nelly = new Timer();
-        nelly.schedule(new secondDealClass(), 400, 1 * 400);
+        cardTimer = new Timer();
+        cardTimer.schedule(new secondDealClass(), 400, 1 * 400); //As in firstDeal, except this has a delay of 400 ms to account for the 'discard'
         
-        nallu = new Timer();
-        nallu.schedule(new calculateClass(), 400 * discardCount, 1 * 400); //Two separate timers to avoid confusion. This starts at the conclusion of nelly
+        calculator = new Timer();
+        calculator.schedule(new calculateClass(), 400 * discardCount, 1 * 400); //Two separate timers to avoid confusion. This starts at the conclusion of cardTimer
     }
     
     private class firstDealClass extends TimerTask
     {      
         int count = 0;
-        public void run()
+        public void run() //Runs at the interval determined earlier (400 milliseconds)
         {
             if (count == 0)
             {
@@ -555,7 +558,7 @@ public class cards extends JFrame{
             else if (count == 3) //Etc.
             {
                 decision3 = dealer.nextInt(52);
-                while(decision3 == decision1 || decision3 == decision2) //Checks to make sure the third card is different to the previouu two
+                while(decision3 == decision1 || decision3 == decision2) //Checks to make sure the third card is different to the previous two
                 {
                     decision3 = dealer.nextInt(52);
                 }
@@ -584,7 +587,7 @@ public class cards extends JFrame{
             }  
             else //count = 6
             {
-                nelly.cancel(); //Cards dealt, timer is switched off
+                cardTimer.cancel(); //Cards dealt, timer is switched off
                 
                 cardDeal.setEnabled(true); //Buttons activated again to allow for decision by the player
                 card1Hold.setEnabled(true);
@@ -598,15 +601,15 @@ public class cards extends JFrame{
                 calculateHand(); //Displays the current hand value as of the first deal
                 handDisplay2.setText("Click Hold to keep the card above it");
             }
-            count++;
+            count++; //When a card has been dealt, move to the next step
         }
     }
     
-    private class secondDealClass extends TimerTask
+    private class secondDealClass extends TimerTask //Works relatively identically to the first deal
     {
         int count2 = 0;
         Boolean card1Flag = false, card2Flag = false, card3Flag = false, card4Flag = false, card5Flag = false;
-        public void run()
+        public void run() //400 ms interval
         {
             if (count2 == 0) //This isolates the card held cases such that they do not interfere with the hand calculation.
             {
@@ -694,7 +697,7 @@ public class cards extends JFrame{
                 }
                 count2++;
             }
-            else if (count2 == 4) //No else since it is not a guarantee that any of the cards will be discarded
+            else if (count2 == 4)
             {
                 if (card5Held == false && card5Flag == false)
                 {
@@ -705,7 +708,7 @@ public class cards extends JFrame{
             }
             if (discardCount == 0) //It will be 0 after all cards have been re-dealt
             {
-            nelly.cancel(); //Hand completed, timer is switched off
+                cardTimer.cancel(); //Hand completed, timer is switched off
             }
         }
     }
@@ -783,13 +786,13 @@ public class cards extends JFrame{
             {
                 calculateHand(); //To decide the winning value of the hand, if any
                 handDisplay2.setText("Press Deal for a new hand");
-                nallu.cancel(); //Delay finished, timer is switched off
+                calculator.cancel(); //Delay finished, timer is switched off
                 
                 cardDeal.setEnabled(true); //The hold buttons do not need to come on again until the next hand
                 changeBet.setEnabled(true);
                 betMax.setEnabled(true);
                 
-                decision1 = 52; //Clears these for the next hand
+                decision1 = 52; //Clears these for the next hand (resets to the default 'technical null value')
                 decision2 = 52;
                 decision3 = 52;
                 decision4 = 52;
@@ -1163,7 +1166,7 @@ public class cards extends JFrame{
                 }
                 else
                 {
-                    if (getCost() == 1)
+                    if (getCost() == 1) //This is separate due to the credit being singular
                     {
                         handDisplay.setText("Jacks or Better - won 1 credit");
                     }
@@ -1204,7 +1207,7 @@ public class cards extends JFrame{
                 }
                 break;
             }
-            case 5:
+            case 5: //Starting here the text delivers a reaction to the hand being dealt out
             {
                 if (cardsDealt == true) 
                 {
@@ -1315,6 +1318,7 @@ public class cards extends JFrame{
         }
     }
     
+    //The variable names could be a lot better, but essentially, 'Mod' means rank (2 through Ace) and 'Div' means suit (spade/club/heart/diamond)
     public int getValue(int card1, int card2, int card3, int card4, int card5)
     {
         int card1Mod = card1 % 13, card2Mod = card2 % 13, card3Mod = card3 % 13, card4Mod = card4 % 13, card5Mod = card5 % 13; //Determines rank
@@ -1377,7 +1381,7 @@ public class cards extends JFrame{
             if (card1Div == card2Div && card2Div == card3Div && card3Div == card4Div && card4Div == card5Div)
             {
                 //Straight flush succeeded, now checking for royal flush
-                if (card1Mod == 8) //I.e. card1Mod is a 10
+                if (card1Mod == 8) //I.e. card1Mod (lowest card) is a 10
                 {
                     //Woop!
                     return 10;
@@ -1399,7 +1403,7 @@ public class cards extends JFrame{
         {
             return 6;
         }
-        //Nothing
+        //Nothing (...mandatory override...of the player's credits)
         else
         {
             return 0;
